@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">Modern beginner guitar lessons</p>
+        <h1>Learn chords that actually feel playable.</h1>
+        <p class="hero-text">
+            Guitar Chord Hub teaches common chord shapes with clean diagrams, simple
+            rhythm patterns, and original practice songs made for new players.
+        </p>
+        <div class="hero-actions">
+            <a class="button primary-button" href="{{ url_for('chords') }}">Explore Chords</a>
+            <a class="button secondary-button" href="{{ url_for('rhythms') }}">Try Rhythms</a>
+        </div>
+    </div>
+
+    <div class="hero-panel" aria-label="Guitar chord learning preview">
+        <div class="guitar-head" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="hero-card-stack">
+            <div class="lesson-tile">
+                <span class="lesson-icon">1</span>
+                <strong>Pick a chord</strong>
+                <p>Start with open shapes like C, G, D, Am, and Em.</p>
+            </div>
+            <div class="lesson-tile offset">
+                <span class="lesson-icon">2</span>
+                <strong>Read the diagram</strong>
+                <p>Follow dots, finger numbers, open strings, and muted strings.</p>
+            </div>
+            <div class="lesson-tile">
+                <span class="lesson-icon">3</span>
+                <strong>Play a rhythm</strong>
+                <p>Use steady down and up strokes before adding speed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content-section intro-strip">
+    <div>
+        <p class="eyebrow">Start here</p>
+        <h2>What is a chord?</h2>
+    </div>
+    <p>
+        A chord is multiple notes played together. On guitar, you create a chord by
+        pressing strings behind frets and strumming several strings at once.
+    </p>
+    <a class="text-link" href="{{ url_for('about_chords') }}">Learn chord basics</a>
+</section>
+
+<section class="content-section">
+    <div class="section-heading split-heading">
+        <div>
+            <p class="eyebrow">Featured chords</p>
+            <h2>Common first shapes</h2>
+        </div>
+        <a class="button secondary-button" href="{{ url_for('chords') }}">View Library</a>
+    </div>
+
+    <div class="chord-grid">
+        {% for chord in featured_chords %}
+            <article
+                class="chord-card"
+                data-chord-card
+                data-chord-id="{{ chord['id'] }}"
+                data-chord-name="{{ chord['name'] }}"
+                data-chord-category="{{ chord['category'] }}"
+                data-chord-difficulty="{{ chord['difficulty'] }}"
+                data-audio-url="{{ chord['audio_url'] }}"
+            >
+                {% set diagram_chord = chord %}
+                {% set diagram_positions = chord["positions"] %}
+                {% set diagram_size = "mini" %}
+                {% include "_chord_diagram.html" %}
+
+                <div class="card-body">
+                    <div class="badge-row">
+                        <span class="category-badge">{{ chord["category"] }}</span>
+                        <span class="difficulty-badge">{{ chord["difficulty"] }}</span>
+                    </div>
+                    <p>{{ chord["description"] }}</p>
+                    <div class="card-controls">
+                        <button
+                            class="icon-button play-mini-button"
+                            type="button"
+                            data-chord-play
+                            data-chord-id="{{ chord['id'] }}"
+                            data-chord-name="{{ chord['name'] }}"
+                            data-chord-category="{{ chord['category'] }}"
+                            data-chord-difficulty="{{ chord['difficulty'] }}"
+                            data-audio-url="{{ chord['audio_url'] }}"
+                            aria-label="Play {{ chord['name'] }} chord"
+                        >
+                            <span aria-hidden="true">♪</span>
+                        </button>
+                        <button
+                            class="icon-button favorite-button"
+                            type="button"
+                            data-favorite-chord
+                            data-chord-id="{{ chord['id'] }}"
+                            data-chord-name="{{ chord['name'] }}"
+                            data-chord-category="{{ chord['category'] }}"
+                            data-chord-difficulty="{{ chord['difficulty'] }}"
+                            data-audio-url="{{ chord['audio_url'] }}"
+                            aria-label="Save {{ chord['name'] }} as a favorite chord"
+                        >
+                            <span aria-hidden="true">☆</span>
+                        </button>
+                    </div>
+                    <a class="text-link" href="{{ url_for('chord_detail', chord_id=chord['id']) }}">Open chord page</a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="content-section audio-shelves">
+    <div class="audio-shelf">
+        <div class="section-heading">
+            <p class="eyebrow">Recently played</p>
+            <h2>Your latest chord sounds</h2>
+        </div>
+        <div class="stored-chord-list" data-recent-chords>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton short"></div>
+        </div>
+    </div>
+
+    <div class="audio-shelf">
+        <div class="section-heading">
+            <p class="eyebrow">Favorites</p>
+            <h2>Saved practice chords</h2>
+        </div>
+        <div class="stored-chord-list" data-favorite-chords>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton short"></div>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="section-heading">
+        <p class="eyebrow">Quick paths</p>
+        <h2>Build a practice session</h2>
+    </div>
+
+    <div class="learning-grid">
+        {% for card in learning_cards %}
+            <a class="learning-card" href="{{ url_for(card['url']) }}">
+                <span class="corner-accent"></span>
+                <h3>{{ card["title"] }}</h3>
+                <p>{{ card["text"] }}</p>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="content-section rhythm-preview">
+    <div>
+        <p class="eyebrow">Rhythm starters</p>
+        <h2>Simple patterns for every chord</h2>
+    </div>
+    <div class="rhythm-preview-list">
+        {% for rhythm in rhythms %}
+            <article>
+                <strong>{{ rhythm["name"] }}</strong>
+                <span>{{ rhythm["pattern"] }}</span>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

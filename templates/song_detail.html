@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ song["title"] }} - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="page-header compact-header">
+    <p class="eyebrow">Practice song</p>
+    <h1>{{ song["title"] }}</h1>
+    <p>{{ song["description"] }}</p>
+    <div class="badge-row">
+        <span class="difficulty-badge">{{ song["difficulty"] }}</span>
+        <span class="category-badge">{{ song["capo"] }}</span>
+    </div>
+</section>
+
+<section class="content-section song-practice-layout">
+    <div class="practice-panel">
+        <p class="eyebrow">Chord progression</p>
+        <h2>Play in order</h2>
+        <div class="progression">
+            {% for chord in chord_rows %}
+                <a href="{{ url_for('chord_detail', chord_id=chord['id']) }}">{{ chord["name"] }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <aside class="rhythm-card">
+        <p class="eyebrow">Rhythm suggestion</p>
+        <h2>{{ song["rhythm_name"] }}</h2>
+        <div class="pattern-display">{{ song["rhythm_pattern"] }}</div>
+        <p>{{ song["rhythm_tip"] }}</p>
+    </aside>
+</section>
+
+<section class="content-section two-column">
+    <article class="article-copy">
+        <h2>Beginner practice note</h2>
+        <p>
+            Count four slow beats for each chord. Change shapes just before the next
+            measure, even if the previous chord still needs work.
+        </p>
+        <p>
+            Loop the progression for two minutes. Keep your strumming hand moving and
+            let the rhythm stay simple.
+        </p>
+    </article>
+
+    <aside class="info-panel">
+        <h2>Chords used</h2>
+        <ul class="clean-list chord-link-list">
+            {% for chord in chord_rows %}
+                <li>
+                    <a href="{{ url_for('chord_detail', chord_id=chord['id']) }}">{{ chord["name"] }}</a>
+                    <span>{{ chord["category"] }}, {{ chord["difficulty"] }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+</section>
+{% endblock %}

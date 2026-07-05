@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Chord Library - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="page-header compact-header">
+    <p class="eyebrow">Chord library</p>
+    <h1>Browse guitar chords</h1>
+    <p>
+        Search by chord name or filter by Major, Minor, 7th, and beginner-friendly
+        difficulty labels. Every chord is rendered from SQLite fingering data.
+    </p>
+</section>
+
+<section class="content-section">
+    <form class="filter-form" method="get" action="{{ url_for('chords') }}">
+        <label>
+            Search
+            <input type="search" name="q" placeholder="Try C, G, Am, A7..." value="{{ search_text }}">
+        </label>
+
+        <label>
+            Category
+            <select name="category">
+                <option value="">All categories</option>
+                {% for category in categories %}
+                    <option value="{{ category['category'] }}" {% if selected_category == category['category'] %}selected{% endif %}>
+                        {{ category["category"] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label>
+            Difficulty
+            <select name="difficulty">
+                <option value="">All difficulties</option>
+                {% for difficulty in difficulties %}
+                    <option value="{{ difficulty['difficulty'] }}" {% if selected_difficulty == difficulty['difficulty'] %}selected{% endif %}>
+                        {{ difficulty["difficulty"] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <button class="button primary-button" type="submit">Filter</button>
+        <a class="button quiet-button" href="{{ url_for('chords') }}">Clear</a>
+    </form>
+</section>
+
+<section class="content-section">
+    {% if chords %}
+        <div class="chord-grid">
+            {% for chord in chords %}
+                <article
+                    class="chord-card library-card"
+                    data-chord-card
+                    data-chord-id="{{ chord['id'] }}"
+                    data-chord-name="{{ chord['name'] }}"
+                    data-chord-category="{{ chord['category'] }}"
+                    data-chord-difficulty="{{ chord['difficulty'] }}"
+                    data-audio-url="{{ chord['audio_url'] }}"
+                >
+                    {% set diagram_chord = chord %}
+                    {% set diagram_positions = chord["positions"] %}
+                    {% set diagram_size = "mini" %}
+                    {% include "_chord_diagram.html" %}
+
+                    <div class="card-body">
+                        <div class="badge-row">
+                            <span class="category-badge">{{ chord["category"] }}</span>
+                            <span class="difficulty-badge">{{ chord["difficulty"] }}</span>
+                        </div>
+                        <p>{{ chord["description"] }}</p>
+                        <div class="card-controls">
+                            <button
+                                class="icon-button play-mini-button"
+                                type="button"
+                                data-chord-play
+                                data-chord-id="{{ chord['id'] }}"
+                                data-chord-name="{{ chord['name'] }}"
+                                data-chord-category="{{ chord['category'] }}"
+                                data-chord-difficulty="{{ chord['difficulty'] }}"
+                                data-audio-url="{{ chord['audio_url'] }}"
+                                aria-label="Play {{ chord['name'] }} chord"
+                            >
+                                <span aria-hidden="true">♪</span>
+                            </button>
+                            <button
+                                class="icon-button favorite-button"
+                                type="button"
+                                data-favorite-chord
+                                data-chord-id="{{ chord['id'] }}"
+                                data-chord-name="{{ chord['name'] }}"
+                                data-chord-category="{{ chord['category'] }}"
+                                data-chord-difficulty="{{ chord['difficulty'] }}"
+                                data-audio-url="{{ chord['audio_url'] }}"
+                                aria-label="Save {{ chord['name'] }} as a favorite chord"
+                            >
+                                <span aria-hidden="true">☆</span>
+                            </button>
+                        </div>
+                        <a class="text-link" href="{{ url_for('chord_detail', chord_id=chord['id']) }}">View full diagram</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h2>No chords found</h2>
+            <p>Try a different chord name or remove one of the filters.</p>
+            <a class="button secondary-button" href="{{ url_for('chords') }}">Reset filters</a>
+        </div>
+    {% endif %}
+</section>
+
+<section class="content-section audio-shelves">
+    <div class="audio-shelf">
+        <div class="section-heading">
+            <p class="eyebrow">Recently played</p>
+            <h2>Quick replay</h2>
+        </div>
+        <div class="stored-chord-list" data-recent-chords>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton short"></div>
+        </div>
+    </div>
+
+    <div class="audio-shelf">
+        <div class="section-heading">
+            <p class="eyebrow">Favorites</p>
+            <h2>Your saved chords</h2>
+        </div>
+        <div class="stored-chord-list" data-favorite-chords>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton short"></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

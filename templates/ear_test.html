@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Chord Ear Test - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="page-header compact-header ear-test-header">
+    <p class="eyebrow">Chord ear test</p>
+    <h1>Guess the chord by sound.</h1>
+    <p>
+        Start with one guided Am round, then move into beginner-friendly random
+        questions. Replay the sound, choose an answer, and build your streak.
+    </p>
+</section>
+
+<section class="content-section ear-test-layout" data-ear-test>
+    <div class="ear-test-card glass-panel">
+        <div class="ear-test-topline">
+            <div>
+                <p class="eyebrow" data-question-label>Tutorial round</p>
+                <h2 data-ear-title>Listen first</h2>
+            </div>
+            <div class="score-board" aria-label="Ear test score">
+                <span>Score <strong data-score>0</strong></span>
+                <span>Streak <strong data-streak>0</strong></span>
+            </div>
+        </div>
+
+        <p class="tutorial-message" data-feedback>
+            This is an Am chord. Listen carefully to its darker emotional sound.
+        </p>
+
+        <div class="ear-player">
+            <button class="button primary-button big-audio-button" type="button" data-play-question>
+                <span class="button-sound-icon" aria-hidden="true">♪</span>
+                Play Sound
+            </button>
+            <button class="button secondary-button" type="button" data-replay-question>
+                Replay Sound
+            </button>
+            <div class="mini-eq ear-eq" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="answer-grid" data-answer-grid>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton"></div>
+            <div class="loading-skeleton"></div>
+        </div>
+
+        <button class="button secondary-button next-question-button" type="button" data-next-question>
+            Next Question
+        </button>
+    </div>
+
+    <aside class="ear-side-panel">
+        <div class="info-panel warm-panel">
+            <p class="eyebrow">Beginner tip</p>
+            <h2>Listen for color</h2>
+            <p>
+                Major chords often sound bright and settled. Minor chords often sound
+                darker. Seventh chords can sound bluesy or like they want to move.
+            </p>
+        </div>
+
+        <div class="audio-shelf">
+            <div class="section-heading">
+                <p class="eyebrow">Recently played</p>
+                <h2>Quiz sounds</h2>
+            </div>
+            <div class="stored-chord-list" data-recent-chords>
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton short"></div>
+            </div>
+        </div>
+    </aside>
+</section>
+
+<script id="ear-test-data" type="application/json">
+    {{ chords|tojson }}
+</script>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/ear_training.js') }}" defer></script>
+{% endblock %}

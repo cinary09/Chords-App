@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Rhythms - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="page-header compact-header">
+    <p class="eyebrow">Strumming patterns</p>
+    <h1>Learn down and up rhythm</h1>
+    <p>
+        A down strum moves toward the floor. An up strum moves back toward your face.
+        Start slowly, count evenly, and let the pattern repeat.
+    </p>
+</section>
+
+<section class="content-section rhythm-lesson-grid">
+    {% for rhythm in rhythms %}
+        <article class="rhythm-card">
+            <div class="badge-row">
+                <span class="difficulty-badge">{{ rhythm["difficulty"] }}</span>
+            </div>
+            <h2>{{ rhythm["name"] }}</h2>
+            <div class="pattern-display">{{ rhythm["pattern"] }}</div>
+            <p>{{ rhythm["description"] }}</p>
+            <p class="practice-note">{{ rhythm["practice_tip"] }}</p>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="content-section lesson-band">
+    <div>
+        <p class="eyebrow">How to practice</p>
+        <h2>Mute the strings first, then add chords.</h2>
+        <p>
+            Rest your fretting hand lightly on the strings and practice the motion.
+            When the rhythm feels even, switch to a simple chord like Em or G.
+        </p>
+    </div>
+    <a class="button primary-button" href="{{ url_for('songs') }}">Use Rhythms in Songs</a>
+</section>
+{% endblock %}

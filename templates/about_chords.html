@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Chord Basics - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="page-header compact-header">
+    <p class="eyebrow">Chord basics</p>
+    <h1>What is a chord?</h1>
+    <p>
+        A chord is multiple notes played together. On guitar, chord diagrams show
+        exactly where your fingers go and which strings should ring.
+    </p>
+</section>
+
+<section class="content-section two-column">
+    <div class="article-copy">
+        <h2>How chord diagrams work</h2>
+        <p>
+            The six vertical lines are guitar strings. The left line is the low E string,
+            and the right line is the high E string. The horizontal lines are frets.
+        </p>
+        <p>
+            A black dot shows a fretted note. The number inside the dot tells you which
+            finger to use: 1 index, 2 middle, 3 ring, and 4 pinky.
+        </p>
+        <p>
+            An O above a string means play it open. An X means mute or skip that string.
+            These small markings are just as important as the finger dots.
+        </p>
+    </div>
+
+    <aside class="info-panel warm-panel">
+        <h2>Practice checklist</h2>
+        <ul class="clean-list">
+            <li>Place fingertips close to the frets, not directly on top of them.</li>
+            <li>Keep fingers curved so nearby strings can ring.</li>
+            <li>Pick each string before strumming the whole chord.</li>
+            <li>Practice two-chord changes before full songs.</li>
+        </ul>
+    </aside>
+</section>
+
+<section class="content-section lesson-band">
+    <div>
+        <p class="eyebrow">Next step</p>
+        <h2>Try a rhythm after the chord rings cleanly.</h2>
+    </div>
+    <a class="button primary-button" href="{{ url_for('rhythms') }}">Open Rhythm Lessons</a>
+</section>
+{% endblock %}

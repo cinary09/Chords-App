@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Songs - Guitar Chord Hub{% endblock %}
+
+{% block content %}
+<section class="page-header compact-header">
+    <p class="eyebrow">Practice songs</p>
+    <h1>Original song progressions</h1>
+    <p>
+        These beginner practice songs use made-up titles and show only chords, rhythm
+        ideas, capo info, and practice notes. No copyrighted lyrics are included.
+    </p>
+</section>
+
+<section class="content-section">
+    <div class="song-grid">
+        {% for song in songs %}
+            <article class="song-card">
+                <div class="song-card-main">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">{{ song["difficulty"] }}</span>
+                        <span class="category-badge">{{ song["rhythm_name"] }}</span>
+                    </div>
+                    <h2>{{ song["title"] }}</h2>
+                    <p>{{ song["description"] }}</p>
+                </div>
+
+                <div class="song-meta">
+                    <p><strong>Progression</strong> {{ song["chord_progression"] }}</p>
+                    <p><strong>Rhythm</strong> {{ song["rhythm_pattern"] }}</p>
+                    <p><strong>Capo</strong> {{ song["capo"] }}</p>
+                </div>
+
+                <a class="text-link" href="{{ url_for('song_detail', song_id=song['id']) }}">Open practice page</a>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

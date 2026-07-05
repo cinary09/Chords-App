@@ -1,0 +1,57 @@
+<div
+    class="chord-diagram {{ diagram_size|default('') }}"
+    role="button"
+    tabindex="0"
+    data-chord-trigger
+    data-chord-id="{{ diagram_chord['id'] }}"
+    data-chord-name="{{ diagram_chord['name'] }}"
+    data-chord-category="{{ diagram_chord['category'] }}"
+    data-chord-difficulty="{{ diagram_chord['difficulty'] }}"
+    data-audio-url="{{ diagram_chord['audio_url'] }}"
+    aria-label="Play {{ diagram_chord['name'] }} chord"
+>
+    <div class="diagram-title-row">
+        <h3>{{ diagram_chord["name"] }}</h3>
+        <span class="sound-glyph" aria-hidden="true">♪</span>
+    </div>
+
+    <div class="string-status-row" aria-hidden="true">
+        {% for position in diagram_positions %}
+            <span class="string-status {{ position['string_state'] }}">
+                {{ position["marker"] }}
+            </span>
+        {% endfor %}
+    </div>
+
+    <div class="fretboard" aria-label="{{ diagram_chord['name'] }} chord diagram">
+        {% for string_index in range(1, 7) %}
+            <span class="string-line" style="left: {{ (string_index - 1) * 20 }}%;"></span>
+        {% endfor %}
+
+        {% for fret_index in range(0, 6) %}
+            <span class="fret-line {% if fret_index == 0 %}nut{% endif %}" style="top: {{ fret_index * 20 }}%;"></span>
+        {% endfor %}
+
+        {% for position in diagram_positions if position["string_state"] == "fretted" %}
+            <span
+                class="finger-dot"
+                style="left: {{ position['left_percent'] }}%; top: {{ position['top_percent'] }}%;"
+            >
+                {{ position["finger_number"] }}
+            </span>
+        {% endfor %}
+    </div>
+
+    <div class="string-name-row" aria-hidden="true">
+        {% for position in diagram_positions %}
+            <span>{{ position["string_name"] }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="mini-eq" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
